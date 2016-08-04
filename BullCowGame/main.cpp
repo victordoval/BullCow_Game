@@ -4,12 +4,19 @@
 using namespace std;
 
 void PrintIntro();
+void PlayGame();
 string GetGuessAndPrintBack();
 
 int main()
 {
 	PrintIntro();
+	PlayGame();
 
+	return 0; // Exit the application
+}
+
+void PlayGame()
+{
 	// Loop for the number of turns asking for guesses
 	constexpr int NUMBER_OF_TURNS = 5;
 	for (int count = 1; count <= NUMBER_OF_TURNS; count++)
@@ -17,7 +24,6 @@ int main()
 		string Input = GetGuessAndPrintBack();
 		cout << endl;
 	}
-	return 0;
 }
 
 // Introduce the game
