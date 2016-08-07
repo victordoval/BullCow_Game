@@ -2,15 +2,18 @@
 This acts as the view in a MVC pattern, and is responsible for all
 user interaction. For game logic see the FBullCowGame class.
 */
+#pragma once
 
 #include <iostream>
 #include <string>
 #include "FBullCowGame.h"
 #include <Windows.h>
 
+// to make syntax Unreal friendly
 using FText = std::string;
 using int32 = int;
 
+// function prototypes as outside a class
 void ResizeConsole();
 void PrintIntro();
 void PlayGame();
@@ -18,19 +21,17 @@ FText GetValidGuess();
 bool AskToPlayAgain();
 void PrintGameSummary();
 
-FBullCowGame BCGame; // instantiate a new game
+FBullCowGame BCGame; // instantiate a new game, which we re-use across plays
 
 int32 main()
 {
 	ResizeConsole(); // resizes console window for the ASCII art to fit
 
-	bool bPlayAgain = false;
 	do {
 		PrintIntro();
 		PlayGame();
-		bPlayAgain = AskToPlayAgain();
 	} 
-	while (bPlayAgain);
+	while (AskToPlayAgain());
 
 	return 0; // exit the application
 }
@@ -41,12 +42,11 @@ void ResizeConsole()
 	RECT r;
 	GetWindowRect(console, &r); //stores the console's current dimensions
 
-								//MoveWindow(window_handle, x, y, width, height, redraw_window);
+	//MoveWindow(window_handle, x, y, width, height, redraw_window);
 	MoveWindow(console, r.left, r.top, 600, 800, TRUE);
-
+	return;
 }
 
-// introduce the game
 void PrintIntro()
 {
 	std::cout << std::endl;
@@ -86,8 +86,11 @@ void PrintIntro()
 	std::cout << "         Can you guess the " << BCGame.GetHiddenWordLength();
 	std::cout << " letter isogram I'm thinking of?\n";
 	std::cout << std::endl;
+
+	return;
 }
 
+// plays a single game to completion
 void PlayGame()
 {
 	BCGame.Reset();
@@ -98,7 +101,7 @@ void PlayGame()
 	while (!BCGame.IsGameWon() && BCGame.GetCurrentTry() <= MaxTries) {
 		FText Guess = GetValidGuess();
 
-		// submit valid guess to the game, and receives count
+		// submit valid guess to the game, and receive count
 		FBullCowCount BullCowCount = BCGame.SubmitValidGuess(Guess);
 
 		std::cout << "Bulls = " << BullCowCount.Bulls;
